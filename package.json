@@ -2,6 +2,10 @@
   "name": "northline-build-mern",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "description": "Northline Build — Full MERN Stack Construction & Engineering Website with Admin CMS, Multer & Cloudinary",
   "scripts": {
     "install:all": "npm --prefix server install && npm --prefix client install",

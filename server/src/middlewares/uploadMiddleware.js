@@ -9,7 +9,9 @@ const ALLOWED_MIME_TYPES = new Set([
   'image/avif',
 ]);
 
-const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
+const MAX_FILE_SIZE_BYTES = process.env.VERCEL
+  ? 4 * 1024 * 1024
+  : 5 * 1024 * 1024; // 4 MB on Vercel serverless, 5 MB locally
 
 const storage = multer.memoryStorage();
 

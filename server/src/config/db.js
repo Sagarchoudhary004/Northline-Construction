@@ -12,6 +12,7 @@ class DatabaseConnection {
       return DatabaseConnection.instance;
     }
     this.isConnected = false;
+    this.connectingPromise = null;
     DatabaseConnection.instance = this;
   }
 
@@ -20,14 +21,26 @@ class DatabaseConnection {
       return mongoose.connection;
     }
 
+    if (this.connectingPromise) {
+      return this.connectingPromise;
+    }
+
     mongoose.set('strictQuery', true);
-    const conn = await mongoose.connect(uri, {
-      serverSelectionTimeoutMS: 15000,
-      family: 4,
-    });
-    this.isConnected = true;
-    console.log(`[MongoDB] Connected: ${conn.connection.host}/${conn.connection.name}`);
-    return conn.connection;
+    this.connectingPromise = mongoose
+      .connect(uri, {
+        serverSelectionTimeoutMS: 15000,
+        family: 4,
+      })
+      .then((conn) => {
+        this.isConnected = true;
+        console.log(`[MongoDB] Connected: ${conn.connection.host}/${conn.connection.name}`);
+        return conn.connection;
+      })
+      .finally(() => {
+        this.connectingPromise = null;
+      });
+
+    return this.connectingPromise;
   }
 
   async disconnect() {
