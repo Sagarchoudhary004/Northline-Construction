@@ -1,0 +1,16 @@
+{
+  "name": "northline-build-mern",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Northline Build — Full MERN Stack Construction & Engineering Website with Admin CMS, Multer & Cloudinary",
+  "scripts": {
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "dev": "concurrently -n API,WEB -c cyan,magenta \"npm --prefix server run dev\" \"npm --prefix client run dev\"",
+    "seed": "npm --prefix server run seed",
+    "build": "npm --prefix client run build",
+    "start": "npm --prefix server start"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

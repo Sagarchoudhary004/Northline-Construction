@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --surface-stone: #F5F4F0;
+    --surface-dark: #0B0D10;
+    --ink-primary: #111317;
+    --accent-terracotta: #D95D39;
+  }
+
+  html {
+    font-family: var(--font-sans);
+    scroll-behavior: auto;
+    background-color: var(--surface-stone);
+    color: var(--ink-primary);
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-mono-label {
+    font-family: var(--font-mono);
+  }
+}
+
+/* Custom architectural grid pattern */
+.bg-architectural-grid {
+  background-size: 64px 64px;
+  background-image:
+    linear-gradient(to right, rgba(17, 19, 23, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(17, 19, 23, 0.045) 1px, transparent 1px);
+}
+
+.bg-architectural-grid-dark {
+  background-size: 64px 64px;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+/* Marquee animation for Cuberto-inspired ticker */
+@keyframes marquee-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee {
+  animation: marquee-scroll 32s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #EAE8E1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #B8B5AC;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D95D39;
+}
