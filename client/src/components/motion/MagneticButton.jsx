@@ -65,6 +65,7 @@ export default function MagneticButton({
     onMouseEnter: () => setCursor('hover'),
     onMouseLeave: handleMouseLeave,
     animate: { x: pos.x, y: pos.y },
+    whileTap: { scale: 0.95 },
     transition: { type: 'spring', stiffness: 320, damping: 22, mass: 0.3 },
     className: `${baseStyles} ${variantStyles[variant] || variantStyles.primary} ${
       disabled ? 'opacity-60 pointer-events-none' : ''
@@ -80,7 +81,12 @@ export default function MagneticButton({
       );
     }
     return (
-      <motion.div className="inline-block" animate={motionProps.animate} transition={motionProps.transition}>
+      <motion.div
+        className="inline-block"
+        animate={motionProps.animate}
+        whileTap={{ scale: 0.95 }}
+        transition={motionProps.transition}
+      >
         <Link
           ref={ref}
           to={to}

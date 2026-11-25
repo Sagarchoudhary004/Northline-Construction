@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowUpRight, Menu, ShieldCheck, X } from 'lucide-react';
+import { ArrowUpRight, Compass, Home, Mail, Menu, ShieldCheck, X } from 'lucide-react';
 import BrandMark from '../common/BrandMark';
 import { useAuth } from '../../context/AuthContext';
 import { useCursor } from '../../context/CursorContext';
 
 const NAV_LINKS = [
-  { label: 'Home', to: '/' },
-  { label: 'About Us', to: '/about' },
-  { label: 'Contact', to: '/contact' },
+  { label: 'Home', shortLabel: 'Home', to: '/', icon: Home },
+  { label: 'About Us', shortLabel: 'About', to: '/about', icon: Compass },
+  { label: 'Contact', shortLabel: 'Contact', to: '/contact', icon: Mail },
 ];
 
 export default function Navbar() {
@@ -106,16 +106,26 @@ export default function Navbar() {
             </Link>
           </nav>
 
-          {/* Mobile Menu Trigger */}
-          <button
-            type="button"
-            onClick={() => setMobileOpen((prev) => !prev)}
-            aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
-            aria-expanded={mobileOpen}
-            className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-full border border-[#111317]/15 bg-white/80 text-[#111317]"
-          >
-            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+          {/* Mobile Quick Admin + Menu Trigger */}
+          <div className="md:hidden flex items-center gap-2">
+            <Link
+              to="/admin"
+              className="inline-flex items-center gap-1 rounded-full border border-[#111317]/15 bg-white/85 px-3 py-2 text-[11px] font-mono-label uppercase tracking-wider text-[#111317] active:scale-95 transition-transform"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-[#D95D39]" />
+              <span>Admin</span>
+            </Link>
+
+            <button
+              type="button"
+              onClick={() => setMobileOpen((prev) => !prev)}
+              aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={mobileOpen}
+              className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-[#111317]/15 bg-white/85 text-[#111317]"
+            >
+              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -165,6 +175,47 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Mobile Floating Bottom Dock for one-thumb interactive navigation */}
+      {!mobileOpen && (
+        <motion.nav
+          aria-label="Mobile quick navigation"
+          initial={{ y: 80, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          className="fixed bottom-3 inset-x-3 z-40 md:hidden grid grid-cols-4 gap-1 rounded-full bg-[#0B0D10]/92 backdrop-blur-lg border border-white/15 p-1.5 shadow-2xl shadow-black/30"
+        >
+          {[
+            ...NAV_LINKS,
+            { label: 'Admin', shortLabel: 'Admin', to: '/admin', icon: ShieldCheck },
+          ].map((item) => {
+            const Icon = item.icon;
+            const active =
+              item.to === '/'
+                ? location.pathname === '/'
+                : location.pathname.startsWith(item.to);
+            return (
+              <Link
+                key={item.to}
+                to={item.to}
+                className={`relative flex flex-col items-center justify-center gap-0.5 rounded-full py-1.5 px-1 text-[10px] font-medium tracking-wide transition-colors ${
+                  active ? 'text-white' : 'text-white/65 active:text-white'
+                }`}
+              >
+                {active && (
+                  <motion.span
+                    layoutId="mobile-dock-pill"
+                    transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                    className="absolute inset-0 rounded-full bg-[#D95D39]"
+                  />
+                )}
+                <Icon className="relative z-10 w-3.5 h-3.5 shrink-0" />
+                <span className="relative z-10 truncate max-w-full">{item.shortLabel}</span>
+              </Link>
+            );
+          })}
+        </motion.nav>
+      )}
     </>
   );
 }

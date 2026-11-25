@@ -131,22 +131,33 @@ export default function AboutPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {about.values.items.map((val, idx) => (
-              <RevealSection
+              <motion.div
                 key={val.title}
-                delay={idx * 0.08}
-                className="rounded-2xl border border-white/10 bg-[#14171D] p-8 sm:p-10 hover:border-[#D95D39]/60 transition-colors"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                whileTap={{ scale: 0.985 }}
+                viewport={{ once: true, amount: 0.18 }}
+                transition={{ duration: 0.6, delay: idx * 0.08 }}
+                className="rounded-2xl border border-white/10 bg-[#14171D] p-8 sm:p-10 hover:border-[#D95D39]/60 active:border-[#D95D39] transition-colors"
               >
                 <div className="flex items-center justify-between mb-6">
                   <span className="font-mono-label text-xs uppercase tracking-[0.22em] text-[#D95D39]">
                     0{idx + 1}
                   </span>
-                  <span className="w-8 h-[1px] bg-white/20" />
+                  <motion.span
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    viewport={{ once: true, amount: 0.4 }}
+                    transition={{ duration: 0.7, delay: 0.1 + idx * 0.08 }}
+                    style={{ transformOrigin: 'right center' }}
+                    className="w-10 h-[1px] bg-[#D95D39]"
+                  />
                 </div>
                 <h3 className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-white mb-4">
                   {val.title}
                 </h3>
                 <p className="text-base text-white/70 leading-relaxed">{val.description}</p>
-              </RevealSection>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -169,10 +180,14 @@ export default function AboutPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {about.process.items.map((step, idx) => (
-              <RevealSection
+              <motion.div
                 key={`${step.number}-${step.title}`}
-                delay={idx * 0.08}
-                className="rounded-2xl bg-white border border-[#111317]/10 p-7 flex flex-col justify-between"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                whileTap={{ scale: 0.985 }}
+                viewport={{ once: true, amount: 0.18 }}
+                transition={{ duration: 0.6, delay: idx * 0.08 }}
+                className="rounded-2xl bg-white border border-[#111317]/10 p-7 flex flex-col justify-between active:border-[#D95D39]"
               >
                 <div>
                   <span className="font-mono-label text-xs uppercase tracking-[0.22em] text-[#D95D39]">
@@ -185,10 +200,17 @@ export default function AboutPage() {
                     {step.description}
                   </p>
                 </div>
-                <div className="mt-8 pt-4 border-t border-[#111317]/10 font-mono-label text-[11px] text-[#111317]/45">
-                  STAGE {step.number}
+                <div className="mt-8 pt-4 border-t border-[#111317]/10 flex items-center justify-between font-mono-label text-[11px] text-[#111317]/45">
+                  <span>STAGE {step.number}</span>
+                  <motion.span
+                    initial={{ width: 0 }}
+                    whileInView={{ width: 28 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.15 + idx * 0.08 }}
+                    className="h-[2px] bg-[#D95D39] rounded-full"
+                  />
                 </div>
-              </RevealSection>
+              </motion.div>
             ))}
           </div>
         </div>

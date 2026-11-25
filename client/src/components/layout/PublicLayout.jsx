@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import Navbar from './Navbar';
 import Footer from './Footer';
@@ -9,6 +9,7 @@ import { useSite } from '../../context/SiteContext';
 export default function PublicLayout() {
   useLenis(true);
   const { loading, error, refreshSiteData } = useSite();
+  const location = useLocation();
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 180,
@@ -44,7 +45,7 @@ export default function PublicLayout() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F5F4F0] text-[#111317]">
+    <div className="min-h-screen flex flex-col bg-[#F5F4F0] text-[#111317] pb-20 md:pb-0">
       <motion.div
         aria-hidden="true"
         style={{ scaleX }}
@@ -52,9 +53,15 @@ export default function PublicLayout() {
       />
       <CustomCursor />
       <Navbar />
-      <main className="flex-1">
+      <motion.main
+        key={location.pathname}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        className="flex-1"
+      >
         <Outlet />
-      </main>
+      </motion.main>
       <Footer />
     </div>
   );
